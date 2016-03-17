@@ -97,18 +97,28 @@ $(document).on('mousemove', 'td[data-col=rating], .rating-container.materialThum
     //workaround for two subsequent thumbup/down cancelling each other
     $this.find('li:first-child, paper-icon-button:first-child').attr('data-rating', rating);
     if((oldRating == 2 && rating == 1) || (oldRating == 4 && rating == 5)) {
-      dblclick = true;
+      dblclick = (this.tagName === 'TD');
     }
 });
 
-$(document).on('click', 'td[data-col="rating"] > .rating-container.thumbs > li', function(event){
+$(document).on('click', 'td[data-col="rating"] > .rating-container.thumbs > li:first-child', function(event){
    //console.log(event.target);
+   //console.log(dblclick);
    
    if(dblclick) {
       event.target.click();
       dblclick = false;
    }
 });
+
+// $(document).on('click', 'paper-icon-button:first-child', function(event){
+//    //console.log(event.target);
+   
+//    if(dblclick) {
+//       event.target.click();
+//       dblclick = false;
+//    }
+// });
 
 
 
