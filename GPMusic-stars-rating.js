@@ -24,17 +24,22 @@ function getLocalCoords(event, element){
 }
 
 function createObserver($player) {
+   var timeoutID;
    var observer = new MutationObserver(function(mutations) {
-      var $ratingContainer = $player.find('.rating-container.materialThumbs');
-      if($ratingContainer.length === 0) {
-         return;
-      }
+      clearTimeout(timeoutID);
+      //cuts down on the frequency of the updates
+      timeoutID = setTimeout(function() {
+          var $ratingContainer = $player.find('.rating-container.materialThumbs');
+          if($ratingContainer.length === 0) {
+              return;
+          }
 
-      var rating = $('tr.currently-playing td[data-col=rating]').attr('data-rating');
+          var rating = $('tr.currently-playing td[data-col=rating]').attr('data-rating');
 
 
-      $ratingContainer.attr('data-rating', rating);
-      $ratingContainer.removeAttr('data-rating-hover');
+          $ratingContainer.attr('data-rating', rating);
+          $ratingContainer.removeAttr('data-rating-hover');}
+      , 500);      
 
    });
    
@@ -80,12 +85,29 @@ function calculateRating(event, $element) {
     return dataRating;
 }
 
+var dblclick = false;
+
 $(document).on('mousemove', 'td[data-col=rating], .rating-container.materialThumbs', function(event) {
     var $this = $(this);
     var rating = calculateRating(event, $this);
     $this.attr('data-rating-hover', rating);
-    if($this.attr('data-rating') == rating) rating = 0;
+    var oldRating = $this.attr('data-rating');
+    if(oldRating == rating) rating = 0;
+   
+    //workaround for two subsequent thumbup/down cancelling each other
     $this.find('li:first-child, paper-icon-button:first-child').attr('data-rating', rating);
+    if((oldRating == 2 && rating == 1) || (oldRating == 4 && rating == 5)) {
+      dblclick = true;
+    }
+});
+
+$(document).on('click', 'td[data-col="rating"] > .rating-container.thumbs > li', function(event){
+   //console.log(event.target);
+   
+   if(dblclick) {
+      event.target.click();
+      dblclick = false;
+   }
 });
 
 
@@ -118,8 +140,12 @@ display: block !important;
 width: 100% !important;
 }
 
+.now-playing-actions {
+min-width: 164px;
+}
+
 .rating-container.materialThumbs > paper-icon-button:first-child {
-min-width: 96px;
+min-width: 120px;
 }
 
 td[data-col="rating"] > .rating-container.thumbs > li:first-child {
