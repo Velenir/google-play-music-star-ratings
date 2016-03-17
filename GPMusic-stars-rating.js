@@ -102,9 +102,6 @@ $(document).on('mousemove', 'td[data-col=rating], .rating-container.materialThum
 });
 
 $(document).on('click', 'td[data-col="rating"] > .rating-container.thumbs > li:first-child', function(event){
-   //console.log(event.target);
-   //console.log(dblclick);
-   
    if(dblclick) {
       event.target.click();
       dblclick = false;
