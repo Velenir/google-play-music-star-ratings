@@ -4,7 +4,7 @@
 // @supportURL  https://github.com/Velenir/google-play-music-star-ratings
 // @description Replaces thumbs up/down buttons with star ratings
 // @include     https://play.google.com/music/listen*
-// @version     1.1
+// @version     1.2
 // @require http://code.jquery.com/jquery-1.12.1.min.js
 // ==/UserScript==
 
@@ -23,23 +23,28 @@ function getLocalCoords(event, element){
     return {x: event.clientX - rect.left, y: event.clientY - rect.top};
 }
 
-function createObserver($player) {
+function createObserver($player, $minique) {
    var timeoutID;
+   function updateToolbarRating() {
+       var $ratingContainer = $player.find('.rating-container.materialThumbs');
+       if($ratingContainer.length === 0) {
+           return;
+       }
+
+       var rating = $('tr.currently-playing td[data-col=rating]').attr('data-rating');
+       if(rating == undefined) {
+           // console.log('RATING BOTCHED');
+           $('#queue').click();
+           updateToolbarRating();
+       }
+
+       $ratingContainer.attr('data-rating', rating);
+       $ratingContainer.removeAttr('data-rating-hover');
+   }
    var observer = new MutationObserver(function(mutations) {
       clearTimeout(timeoutID);
       //cuts down on the frequency of the updates
-      timeoutID = setTimeout(function() {
-          var $ratingContainer = $player.find('.rating-container.materialThumbs');
-          if($ratingContainer.length === 0) {
-              return;
-          }
-
-          var rating = $('tr.currently-playing td[data-col=rating]').attr('data-rating');
-
-
-          $ratingContainer.attr('data-rating', rating);
-          $ratingContainer.removeAttr('data-rating-hover');}
-      , 500);      
+      timeoutID = setTimeout(updateToolbarRating, 500);      
 
    });
    
@@ -54,15 +59,13 @@ if (sUsrAg.indexOf("Firefox") > -1) {
 
 $(document).ready(function() {
    var $player = $('#player');
-   var observer = createObserver($player);
+   var $songTable = $('#queue-overlay');
+   var observer = createObserver($player, $songTable);
    
    if(sBrowser === "Mozilla Firefox") {
       observer.observe($player[0], {attributes: true});
    } else {
-
-      var $songTable = $('#queue-overlay');
       observer.observe($songTable[0], {childList: true, subtree: true});
-
    }
 });
 
