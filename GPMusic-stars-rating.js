@@ -96,26 +96,15 @@ $(document).on('mousemove', 'td[data-col=rating], .rating-container.materialThum
    
     //workaround for two subsequent thumbup/down cancelling each other
     $this.find('li:first-child, paper-icon-button:first-child').attr('data-rating', rating);
-    if((oldRating == 2 && rating == 1) || (oldRating == 4 && rating == 5)) {
-      dblclick = (this.tagName === 'TD');
-    }
+    dblclick = ((oldRating == 2 && rating == 1) || (oldRating == 4 && rating == 5)) && (this.tagName === 'TD');
 });
 
 $(document).on('click', 'td[data-col="rating"] > .rating-container.thumbs > li:first-child', function(event){
    if(dblclick) {
-      event.target.click();
       dblclick = false;
+      event.target.click();
    }
 });
-
-// $(document).on('click', 'paper-icon-button:first-child', function(event){
-//    //console.log(event.target);
-   
-//    if(dblclick) {
-//       event.target.click();
-//       dblclick = false;
-//    }
-// });
 
 
 
