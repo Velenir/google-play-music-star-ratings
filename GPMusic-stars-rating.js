@@ -4,7 +4,7 @@
 // @supportURL  https://github.com/Velenir/google-play-music-star-ratings
 // @description Replaces thumbs up/down buttons with star ratings
 // @include     https://play.google.com/music/listen*
-// @version     1.0
+// @version     1.1
 // @require http://code.jquery.com/jquery-1.12.1.min.js
 // ==/UserScript==
 
@@ -60,7 +60,7 @@ $(document).ready(function() {
       observer.observe($player[0], {attributes: true});
    } else {
 
-      var $songTable = $('#music-content');
+      var $songTable = $('#queue-overlay');
       observer.observe($songTable[0], {childList: true, subtree: true});
 
    }
