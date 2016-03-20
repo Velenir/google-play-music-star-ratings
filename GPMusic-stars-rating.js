@@ -25,6 +25,7 @@ function getLocalCoords(event, element){
 
 function createObserver($player, $minique) {
    var timeoutID;
+   var stopCount = 0;
    function updateToolbarRating() {
        var $ratingContainer = $player.find('.rating-container.materialThumbs');
        if($ratingContainer.length === 0) {
@@ -33,6 +34,7 @@ function createObserver($player, $minique) {
 
        var rating = $('tr.currently-playing td[data-col=rating]').attr('data-rating');
        if(rating == undefined) {
+           ++stopCount;
            // console.log('RATING BOTCHED');
            $('#queue').click();
            return updateToolbarRating();
@@ -40,6 +42,7 @@ function createObserver($player, $minique) {
 
        $ratingContainer.attr('data-rating', rating);
        $ratingContainer.removeAttr('data-rating-hover');
+       stopCount = 0;
    }
    var observer = new MutationObserver(function(mutations) {
       clearTimeout(timeoutID);
