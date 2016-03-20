@@ -35,7 +35,7 @@ function createObserver($player, $minique) {
        if(rating == undefined) {
            // console.log('RATING BOTCHED');
            $('#queue').click();
-           updateToolbarRating();
+           return updateToolbarRating();
        }
 
        $ratingContainer.attr('data-rating', rating);
