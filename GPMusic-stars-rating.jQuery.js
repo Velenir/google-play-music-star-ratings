@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        Google Play Music star ratings
+// @name        Google Play Music star ratings -- JQuery version
 // @namespace   https://github.com/Velenir/google-play-music-star-ratings/jQuery
 // @supportURL  https://github.com/Velenir/google-play-music-star-ratings
 // @downloadURL https://github.com/Velenir/google-play-music-star-ratings/raw/master/GPMusic-stars-rating.jQuery.js
