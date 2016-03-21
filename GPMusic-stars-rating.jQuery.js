@@ -5,7 +5,7 @@
 // @downloadURL https://github.com/Velenir/google-play-music-star-ratings/raw/master/GPMusic-stars-rating.jQuery.js
 // @description Replaces thumbs up/down buttons with star ratings
 // @include     https://play.google.com/music/listen*
-// @version     1.5
+// @version     1.51
 // @require http://code.jquery.com/jquery-1.12.1.min.js
 // ==/UserScript==
 
@@ -38,14 +38,16 @@ function createObserver($player) {
            stopCount = 0;
            return;
        }
-       var rating = $('tr.currently-playing td[data-col=rating]').attr('data-rating');
-       if(rating == undefined) {
+       var $currentlyPlaying = $('tr.currently-playing td[data-col=rating]');
+       if($currentlyPlaying.length === 0) {
            if($('#queue-overlay').is(":visible")) return;
            ++stopCount;
            // console.log('RATING BOTCHED');
            $('#queue').click();
            return updateToolbarRating();
        }
+       
+       var rating = $currentlyPlaying.attr('data-rating');
 
        $ratingContainer.attr('data-rating', rating);
        $ratingContainer.removeAttr('data-rating-hover');
