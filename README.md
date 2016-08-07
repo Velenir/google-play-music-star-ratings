@@ -12,3 +12,7 @@ Part of the script concerned with updating ratings on the bottom toolbar (*'#pla
 The problem with the miniqueue is that when it contains more than 10 songs, it is dynamically populated on opening. Thus, there may not be *'tr.currently-playing'* in the DOM for songs after the 10th in the queue. In that case the script will attempt to open the minique and refetch the rating.
 
 Therefore expect the minique to reopen on each song past 10th, or just leave it open.
+
+#License
+
+Licensed under the MIT license.
